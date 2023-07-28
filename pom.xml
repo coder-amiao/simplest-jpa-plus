@@ -12,7 +12,8 @@
     <artifactId>simplest-jpa-spring-boot-starter</artifactId>
     <version>1.0.0</version>
     <name>simplest-jpa</name>
-    <description>simplest-jpa</description>
+    <description>SpringBoot Simplest JPA  基于QueryDSL语法灵活的QueryWrapper,和链式query 强大自由组合查询器,像写原生SQL一样写Java 查询。 通用service封装。</description>
+    <url>https://github.com/coder-amiao/simplest-jpa</url>
     <packaging>jar</packaging>
 
 
@@ -50,6 +51,26 @@
         </developer>
     </developers>
 
+    <!--   项目仓库信息         -->
+    <scm>
+        <connection>scm:git:https://github.com/zw201913/jtile38.git</connection>
+        <developerConnection>https://github.com/coder-amiao/simplest-jpa</developerConnection>
+        <url>https://github.com/coder-amiao/simplest-jpa</url>
+        <tag>v${project.version}</tag>
+    </scm>
+
+    <!-- 中央仓库地址配置，不需要修改 -->
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+
+        <repository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
 
     <dependencies>
@@ -169,6 +190,27 @@
                         <phase>package</phase>
                         <goals>
                             <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- GPG -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <configuration>
+                    <gpgArguments>
+                        <arg>--pinentry-mode</arg>
+                        <arg>loopback</arg>
+                    </gpgArguments>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
                         </goals>
                     </execution>
                 </executions>
