@@ -3,7 +3,6 @@ package cn.soboys.simplestjpa;
 
 import cn.soboys.simplestjpa.exception.UpdateException;
 import com.querydsl.core.types.*;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import org.dromara.hutool.core.array.ArrayUtil;
@@ -55,12 +54,7 @@ public interface IService<T, ID extends Serializable> {
      *
      * @return
      */
-    JPAQueryFactory getJPAQueryFactory();
-
-    /**
-     * queryDSL 查询 query
-     */
-    JPAQuery queryChain();
+    JPAQueryFactory queryChain();
 
 
     /**
@@ -92,10 +86,7 @@ public interface IService<T, ID extends Serializable> {
      */
     default T save(T entity) {
         return getRepository().save(entity);
-    }
-
-    ;
-
+    };
 
     /**
      * <p>批量保存实体类对象数据。
@@ -113,7 +104,7 @@ public interface IService<T, ID extends Serializable> {
      * @return T
      */
     @Transactional
-    default T update(T entity, Object... ignore) {
+    default T update(T entity) {
 
         JpaEntityInformation entityInformation = JpaEntityInformationSupport.getEntityInformation(entity.getClass(), getEntityManager());
         entityInformation.getRequiredId(entity);
@@ -122,7 +113,7 @@ public interface IService<T, ID extends Serializable> {
 
     /**
      * @param entity 实体类对象
-     * @param entity 查询条件  根据实体ID 更新。 全量覆盖
+     * @param entity 查询条件  根据实体ID更新。自定义忽略null值
      * @return T
      */
     @Transactional
@@ -198,6 +189,22 @@ public interface IService<T, ID extends Serializable> {
             return entity;
         } else {
             return getEntityManager().merge(entity);
+        }
+    }
+
+    /**
+     * 插入或者更新，若主键有值，则更新，若没有主键值，则插入
+     * @param entity
+     * @return 更新会忽略 null 值。
+     */
+    @Transactional
+    default T saveOrUpdateSelective(T entity) {
+        JpaEntityInformation entityInformation = JpaEntityInformationSupport.getEntityInformation(entity.getClass(), getEntityManager());
+        if (entityInformation.isNew(entity)) {
+            getEntityManager().persist(entity);
+            return entity;
+        } else {
+            return this.update(entity,true);
         }
     }
 

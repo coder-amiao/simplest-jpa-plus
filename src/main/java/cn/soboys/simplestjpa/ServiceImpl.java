@@ -37,20 +37,14 @@ public class ServiceImpl<R extends BaseRepository<T, ID>,
         return repository;
     }
 
-
-    @Override
-    public JPAQueryFactory getJPAQueryFactory() {
-        return jpaQueryFactory;
-    }
-
     @Override
     public EntityManager getEntityManager() {
         return entityManager;
     }
 
     @Override
-    public JPAQuery queryChain() {
-        return jpaQueryFactory.query();
+    public JPAQueryFactory queryChain() {
+        return jpaQueryFactory;
     }
 
     @Override
