@@ -1,5 +1,7 @@
 package cn.soboys.simplestjpa.plugin;
 
+import cn.soboys.simplestjpa.utils.BaseObj;
+
 /**
  * @author 公众号 程序员三时
  * @version 1.0
@@ -7,6 +9,11 @@ package cn.soboys.simplestjpa.plugin;
  * @webSite https://github.com/coder-amiao
  * 获取当前的租户ID
  */
-public interface TenantFactory {
-   String getTenantId();
+public interface TenantFactory  {
+    String getTenantId();
+
+
+
+
+
 }

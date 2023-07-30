@@ -1,6 +1,7 @@
 package cn.soboys.simplestjpa.interceptor;
 
 import cn.soboys.simplestjpa.config.TenantProperties;
+import cn.soboys.simplestjpa.plugin.CustomTenant;
 import cn.soboys.simplestjpa.plugin.TenantFactory;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -68,9 +69,17 @@ public class TenantInterceptor implements StatementInspector {
          * 从当前线程获取登录用户的所属租户ID
          */
         TenantProperties tenantProperties = SpringUtil.getBean(TenantProperties.class);
-        TenantFactory tenantFactory = SpringUtil.getBean("tenantFactory");
 
-        if (tenantProperties.getEnableTenant() && tenantFactory != null && tenantProperties.getTables().size() > 0) {
+        TenantFactory tenantFactory = SpringUtil.getBean(TenantFactory.class);
+
+        if (tenantProperties.getEnableTenant() &&
+                !StrUtil.isEmptyIfStr(tenantFactory.getTenantId()) && tenantProperties.getTables().size() > 0) {
+
+            //自定义忽略某个sql 不进行租户拦截
+            if (CustomTenant.withoutTenantCondition) {
+                CustomTenant.withoutTenantCondition = false;
+                return sql;
+            }
             //当前租户ID
             tenantId = tenantFactory.getTenantId();
             if (StrUtil.isEmpty(tenantId)) return sql;

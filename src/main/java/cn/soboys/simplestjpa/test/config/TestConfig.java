@@ -1,8 +1,8 @@
 package cn.soboys.simplestjpa.test.config;
 
 import cn.soboys.simplestjpa.annotation.EnableJPAQuery;
+import cn.soboys.simplestjpa.plugin.TenantData;
 import cn.soboys.simplestjpa.plugin.TenantFactory;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,8 +15,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 //@EnableJPAQuery
 public class TestConfig {
-    @Bean
-    public TenantFactory tenantFactory() {
-        return new TenantData();
-    }
+//    @Bean
+//    public TenantFactory tenantFactory() {
+//        return new TenantData();
+//    }
 }

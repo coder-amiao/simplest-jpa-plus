@@ -35,5 +35,8 @@ public class TenantProperties {
      */
     private Boolean enableTenant=Boolean.FALSE;
 
-
+    /**
+     * 自定义忽略某个方法执行租户拦截
+     */
+    private Boolean customTenant=Boolean.FALSE;
 }

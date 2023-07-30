@@ -10,7 +10,7 @@
     </parent>
     <groupId>cn.soboys</groupId>
     <artifactId>simplest-jpa-spring-boot-starter</artifactId>
-    <version>1.0.1</version>
+    <version>1.2.0</version>
     <name>simplest-jpa</name>
     <description>基于QueryDSL语法灵活强大的QueryWrapper,链式QueryChain 强大自由组合查询器,像写原生SQL一样基于 Java API 查询数据,优雅极致。。</description>
     <url>https://github.com/coder-amiao/simplest-jpa</url>

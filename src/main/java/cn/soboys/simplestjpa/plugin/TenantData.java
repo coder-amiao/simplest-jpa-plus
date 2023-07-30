@@ -1,4 +1,4 @@
-package cn.soboys.simplestjpa.test.config;
+package cn.soboys.simplestjpa.plugin;
 
 import cn.soboys.simplestjpa.plugin.TenantFactory;
 
@@ -8,10 +8,10 @@ import cn.soboys.simplestjpa.plugin.TenantFactory;
  * @date 2023/7/30 15:35
  * @webSite https://github.com/coder-amiao
  */
-public class TenantData  implements TenantFactory {
+public class TenantData implements TenantFactory {
 
     @Override
     public String getTenantId() {
-        return "租户解析";
+        return "";
     }
 }
