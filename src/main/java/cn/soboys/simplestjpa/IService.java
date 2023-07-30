@@ -1,7 +1,9 @@
 package cn.soboys.simplestjpa;
 
 
+import cn.soboys.simplestjpa.config.TenantProperties;
 import cn.soboys.simplestjpa.exception.UpdateException;
+import cn.soboys.simplestjpa.plugin.TenantFactory;
 import com.querydsl.core.types.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
@@ -11,6 +13,7 @@ import org.dromara.hutool.core.bean.copier.CopyOptions;
 import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.exception.ExceptionUtil;
 import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.extra.spring.SpringUtil;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -85,8 +89,22 @@ public interface IService<T, ID extends Serializable> {
      * @return T
      */
     default T save(T entity) {
+        TenantProperties tenantProperties = SpringUtil.getBean(TenantProperties.class);
+        if (tenantProperties != null && tenantProperties.getEnableTenant() && tenantProperties.getTables().size() > 0) {
+            String tenant = StrUtil.toCamelCase(tenantProperties.getTenantIdColumn());
+            TenantFactory tenantFactory = SpringUtil.getBean("tenantFactory");
+            try {
+                Field field = entity.getClass().getDeclaredField(tenant);
+                field.setAccessible(true);
+                if (tenantFactory != null) field.set(entity, tenantFactory.getTenantId());
+            } catch (Exception e) {
+
+            }
+        }
         return getRepository().save(entity);
-    };
+    }
+
+    ;
 
     /**
      * <p>批量保存实体类对象数据。
@@ -194,6 +212,7 @@ public interface IService<T, ID extends Serializable> {
 
     /**
      * 插入或者更新，若主键有值，则更新，若没有主键值，则插入
+     *
      * @param entity
      * @return 更新会忽略 null 值。
      */
@@ -204,7 +223,7 @@ public interface IService<T, ID extends Serializable> {
             getEntityManager().persist(entity);
             return entity;
         } else {
-            return this.update(entity,true);
+            return this.update(entity, true);
         }
     }
 

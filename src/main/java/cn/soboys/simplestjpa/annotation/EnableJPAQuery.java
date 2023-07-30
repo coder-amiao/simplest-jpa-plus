@@ -1,5 +1,6 @@
 package cn.soboys.simplestjpa.annotation;
 
+import cn.soboys.simplestjpa.config.BeanAutoConfiguration;
 import cn.soboys.simplestjpa.config.JpaConfig;
 import org.springframework.context.annotation.Import;
 
@@ -16,7 +17,7 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Import({JpaConfig.class})
+@Import({BeanAutoConfiguration.class,JpaConfig.class})
 public @interface EnableJPAQuery {
 
 }

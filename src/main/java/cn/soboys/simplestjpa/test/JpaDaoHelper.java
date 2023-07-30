@@ -1,4 +1,4 @@
-package cn.soboys.simplestjpa.config;
+package cn.soboys.simplestjpa.test;
 
 import javax.persistence.EntityManager;
 
